@@ -1,0 +1,131 @@
+
+@media screen and (max-width: 1199px) {
+    .search-form {
+        margin: 0 30px;
+    }
+}
+.search-form__input {
+    height: 50px;
+    width: 100%;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    border-bottom: solid 1px #424242;
+    color: #FFFFFF;
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 34px;
+    display: flex;
+}
+
+.search-form__input:focus::placeholder {
+    color: transparent;
+    background-image: none;
+}
+
+.search-form__input::placeholder {
+    text-align: center;
+    background-image: url(../../images/icon.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.search-form__container {
+    display: flex;
+    position: relative;
+
+}
+
+.search-form__button {
+    position: absolute;
+    right: 0;
+    height: 34px;
+    width: 34px;
+    border-radius: 100%;
+    outline: none;
+    border: none;
+    background-image: url(../../images/find.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.search-form__button:hover {
+    opacity: 0.8;
+}
+
+/*он тут*/
+.slider-green {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: grey;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 20px;
+}
+
+.slider-green:before {
+    position: absolute;
+    content: "";
+    border-radius: 100%;
+    height: 16px;
+    width: 16px;
+    top: 2px;
+    left: 2px;
+    bottom: 2px;
+    background-color: #fff;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider-green {
+    background-color: #3DDC84;
+}
+
+input:checked + .slider-green:before {
+    -webkit-transform: translateX(16px);
+    -ms-transform: translateX(16px);
+    transform: translateX(16px);
+}
+
+.switch {
+    position: relative;
+    width: 36px;
+    height: 20px;
+}
+
+.switch input {
+    display: none;
+}
+.search-form__wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+}
+.switch__text {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+}
+@media screen and (max-width: 767px) {
+    .search-form__input {
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 22px;
+        text-align: left;
+    }
+    .search-form__input::placeholder {
+        background-image: none;
+        text-align: left;
+    }
+    .switch__text {
+        font-size: 11px;
+        font-weight: 400;
+        line-height: 18px;
+    }
+}

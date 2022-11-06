@@ -1,0 +1,12 @@
+.movies {
+    max-width: 1200px;
+    margin: 68px auto 70px;
+    display: flex;
+    flex-direction: column;
+    gap: 130px;
+}
+@media screen and (max-width: 767px) {
+    .movies {
+        gap: 91px;
+    }
+}

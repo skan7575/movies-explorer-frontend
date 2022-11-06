@@ -1,0 +1,7 @@
+.movies-card-list {
+    list-style: none;
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
