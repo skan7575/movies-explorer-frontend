@@ -1,7 +1,24 @@
+.movies-card-list__item {
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    background-color: #222222;
+    border-radius: 6px;
+}
+.movies-card-list {
+    padding: 0;
+    margin: 0;
+}
 .movies-card-list {
     list-style: none;
     display: flex;
     gap: 32px;
     flex-wrap: wrap;
     justify-content: center;
+}
+
+@media screen and (max-width: 767px) {
+    .movies-card-list {
+        margin: 0 10px;
+    }
 }

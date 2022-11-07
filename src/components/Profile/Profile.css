@@ -72,3 +72,15 @@ input:focus::placeholder {
     margin-top: 16px;
     cursor: pointer;
 }
+@media screen and (max-width: 767px) {
+    .profile__from {
+        max-width: 260px;
+    }
+    .profile__from-input {
+        max-width: 100%;
+    }
+    .profile__title {
+        margin-top: 70px;
+        margin-bottom: 80px;
+    }
+}
