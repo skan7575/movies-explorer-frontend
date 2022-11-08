@@ -1,8 +1,12 @@
+import React from "react";
+import { withRouter } from 'react-router-dom';
 import Logo from "../Logo/Logo";
 import {Link} from "react-router-dom";
 import "./Register.css"
 import {useEffect, useState} from "react";
-function Register() {
+function Register(props) {
+    const[name, setName] = useState('')
+    const[nameFocus, setNameFocus] = useState('')
     const[email, setEmail] = useState('')
     const[password, setPassword] = useState('')
     const[emailFocus, setEmailFocus] = useState(false)
@@ -29,6 +33,9 @@ function Register() {
             setEmailError('')
         }
     }
+    const nameHandler = (e) => {
+        setName(e.target.value)
+    }
     const passwordHandler = (e) => {
         setPassword(e.target.value)
         if(e.target.value.length < 8) {
@@ -46,17 +53,24 @@ function Register() {
             case 'password':
                 setPasswordFocus(true)
                 break
+            case 'name':
+                setNameFocus(true)
+                break
         }
+    }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log('ьтык')
     }
 
     return(
-    <section className='register'>
+    <main className='register'>
         <Logo />
         <h1 className='register__title'>Добро пожаловать!</h1>
-        <form className='register__form'>
+        <form onSubmit={handleSubmit} className='register__form'>
             <div className="register__form-container">
                 <label className='register__form-label'>Имя</label>
-                <input className='register__form-input' type="text" required/>
+                <input onChange={nameHandler} value={name} name='name' className='register__form-input' type="text" required/>
             </div>
             <div className="register__form-container">
                 <label className='register__form-label'>E-mail</label>
@@ -73,7 +87,7 @@ function Register() {
                 <Link to="/signin" className="register__form-link">Войти</Link>
             </p>
         </form>
-    </section>
+    </main>
     )
 }
 export default Register

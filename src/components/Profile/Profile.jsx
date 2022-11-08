@@ -4,7 +4,7 @@ function Profile() {
     return(
         <>
             <Header />
-            <section className='profile'>
+            <main className='profile'>
                 <h1 className='profile__title'>Привет, Сергей!</h1>
                 <form className='profile__from'>
                     <div className='profile__from-container'>
@@ -22,7 +22,7 @@ function Profile() {
                     <button className='profile__from-button'>Редактировать</button>
                 </form>
                 <button className='profile__exit-button'>Выйти из аккаунта</button>
-            </section>
+            </main>
         </>
     )
 }

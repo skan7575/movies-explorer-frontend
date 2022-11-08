@@ -18,13 +18,12 @@ function App() {
             <div className='page'>
                 <Routes>
                     <Route path="/" element={<Main />}
-                           loggedIn={loggedIn}
                     />
                     <Route path='profile' element={<Profile />} />
                     <Route path='saved-movie' element={<SavedMovies />} />
                     <Route path='movies' element={<Movies />}/>
                     <Route path='signin' element={<Login />}/>
-                    <Route path='signup' element={<Register />}/>
+                    <Route path='signup' loggedIn={true} element={<Register />}/>
                     <Route path='*' element={<NotFoundPage />}/>
                 </Routes>
             </div>

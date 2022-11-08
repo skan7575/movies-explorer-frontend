@@ -30,6 +30,7 @@
     background-repeat: no-repeat;
     background-position: right 6px top 18px;
     background-size: 18px;
+    min-height: 48px;
 }
 
 .portfolio__list-item_underline::after {

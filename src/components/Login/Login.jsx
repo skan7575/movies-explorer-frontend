@@ -3,7 +3,7 @@ import Logo from "../Logo/Logo";
 import {Link} from "react-router-dom";
 function Login() {
     return(
-        <section className='login'>
+        <main className='login'>
             <Logo />
             <h1 className='login__title'>Рады видеть!</h1>
             <form className='login__form'>
@@ -20,7 +20,7 @@ function Login() {
                     <Link to="/signup" className="login__form-link">Регистрация</Link>
                 </p>
             </form>
-        </section>
+        </main>
     )
 }
 export default Login

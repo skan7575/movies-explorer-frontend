@@ -20,7 +20,7 @@ function Navigation(props) {
             ): (
                 <div className={`${isPopupOpen ? "overlay" : "overlay__container"}`}>
                     <nav className={`navigation navigation__popup ${isPopupOpen ? "navigation__popup_open" : ""}`}>
-                        <button className="navigation__popup-button" onClick={handlePopupClose}></button>
+                        <button className="navigation__popup-button" type="button" onClick={handlePopupClose}></button>
                         <div className='navigation__container'>
                             <Link onClick={handlePopupClose} to='/' className='navigation__link navigation__link_mobile'>Главная</Link>
                             <NavLink to='/movies' className='navigation__link'>Фильмы</NavLink>
