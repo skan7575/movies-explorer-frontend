@@ -9,7 +9,7 @@ import Header from "../Header/Header";
 function Main(props) {
     return (
         <main className='main'>
-            <Header loggedIn={props.loggedIn}/>
+            <Header/>
             <Promo />
             <AboutProject />
             <Techs />

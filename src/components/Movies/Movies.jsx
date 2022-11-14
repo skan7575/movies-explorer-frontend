@@ -3,13 +3,13 @@ import SearchForm from "../SearchForm/SearchForm";
 import './Movies.css'
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Footer from "../Footer/Footer";
-function Movies() {
+function Movies({movie}) {
     return(
         <>
-            <Header />
+            <Header/>
             <main className='movies'>
                 <SearchForm />
-                <MoviesCardList />
+                <MoviesCardList movie={movie}/>
                 <button className='movies-card-button' type="button" name="more">Ещё</button>
             </main>
             <Footer />

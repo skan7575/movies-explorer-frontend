@@ -3,10 +3,10 @@ import Header from "../Header/Header";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import SearchForm from "../SearchForm/SearchForm";
 import Footer from "../Footer/Footer";
-function SavedMovies() {
+function SavedMovies(props) {
     return(
         <>
-            <Header />
+            <Header loggedIn={props.loggedIn}/>
             <main className='movies'>
                 <SearchForm />
                 <MoviesCardList />

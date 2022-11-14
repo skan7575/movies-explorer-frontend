@@ -1,8 +1,11 @@
 import {Link, NavLink} from "react-router-dom";
 import React, {useEffect} from 'react'
 import './Navigation.css'
-function Navigation(props) {
+import {LoggedInContext} from "../context/LoggedInContext";
+function Navigation() {
     const [isPopupOpen, setIsPopupOpen] = React.useState(false)
+
+    const loggedIn = React.useContext(LoggedInContext)
 
     function handlePopupOpen() {
         setIsPopupOpen(true)
@@ -12,7 +15,7 @@ function Navigation(props) {
     }
     return(
         <>
-            {props.loggedIn ? (
+            {!loggedIn ? (
                 <nav className='navigation-login'>
                     <Link to='signup' className='navigation__signup'>Регистрация</Link>
                     <Link to='signin' className='navigation__signin'>Войти</Link>

@@ -4,7 +4,19 @@ import jpg from '../../images/pic__COLOR_pic.jpg'
 import {useLocation} from "react-router-dom";
 
 
-function MoviesCard(props) {
+function MoviesCard(
+    {
+        name,
+        duration,
+        thumbnail,
+        trailerLink,
+        savedMovies,
+        onSave,
+        onDelete,
+        movie,
+        allSavedMovies,
+    }
+) {
     const {pathname} = useLocation();
     const [favorite, setFavorite] = useState(false);
 
@@ -16,13 +28,12 @@ function MoviesCard(props) {
     }
 
     return (
-
         <li className='movies-card-list__item'>
             <div className='movies-card__about'>
-                <h2 className='movies-card__title'>В погоне за Бенкси</h2>
-                <p className='movies-card__time'>27 минут</p>
+                <h2 className='movies-card__title'>{movie.nameRU}</h2>
+                <p className='movies-card__time'>{movie.duration}</p>
             </div>
-            <img className='movies-card__image' src={jpg} alt="описание картинки будет использовано при создании функционала"/>
+            <img className='movies-card__image' alt={movie.nameRU} src={`https://api.nomoreparties.co/${movie.image.formats.thumbnail.url}`}/>
             {pathname === '/saved-movie' ? (
                 <button type="button" className="movies-card__button movies-card__button_delete" onClick={handleFavoriteDelete} />
             ) : (
