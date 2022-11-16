@@ -24,6 +24,17 @@ function App() {
     const [loggedIn, setLoggedIn] = useState(false)
     const [popupMassage, setPopupMassage] = useState('')
     const [popupOpen, setPopupOpen] = useState(false)
+    const [savedFilms, setSavedFilms] = useState([])
+
+    function getSavedFilms () {
+        api.getSaveFilm()
+            .then((res) => {
+                setSavedFilms(res)
+            })
+            .catch(err => {
+
+            })
+    }
 
     function handlePopupClose() {
         setPopupOpen(false)
@@ -111,6 +122,7 @@ function App() {
 
     useEffect(() => {
         tokenCheck()
+        getSavedFilms()
     }, [])
 
     return (
@@ -132,12 +144,12 @@ function App() {
                         }/>
                         <Route path='saved-movie' element={
                             <UseAuth>
-                                <SavedMovies/>
+                                <SavedMovies savedFilms={savedFilms} />
                             </UseAuth>
                         }/>
                         <Route path='movies' element={
                             loggedIn ?
-                            <UseAuth children={<Movies onSave={handleSaveFilm} />}>
+                            <UseAuth children={<Movies onSave={handleSaveFilm} savedFilms={savedFilms} />}>
                             </UseAuth> : <Preloader />
                         }/>
                         <Route path='signin' element={

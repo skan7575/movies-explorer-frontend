@@ -8,7 +8,7 @@ import {getData} from "../../utils/MoviesApi";
 import Preloader from "../Preloader/Preloader";
 import preloader from "../Preloader/Preloader";
 
-function Movies({onSave}) {
+function Movies({onSave, savedFilms}) {
     const [movies, setMovies] = useState([]);
     const [query, setQuery] = useState("")
     const [onlyShort, setOnlyShort] = useState(false)
@@ -28,6 +28,8 @@ function Movies({onSave}) {
             return nameRU.toLowerCase().includes(queryLowerCase)
                 && (!onlyShortChoice || duration <= 40)
         })
+
+    const savedFilmsSet = new Set(savedFilms.map((item) => item.movieId))
 
     function onQueryChange(query) {
         setQuery(query)
@@ -53,7 +55,7 @@ function Movies({onSave}) {
                     moviesData={onMoviesData}
                     onQueryChange={onQueryChange}
                     onSwitchChange={onSwitchChange}/>
-                {isLoading === true ? (<Preloader />) : (<MoviesCardList onSave={onSave} movies={filterMovies} query={query} onlyShort={onlyShort}/>)}
+                {isLoading === true ? (<Preloader />) : (<MoviesCardList onSave={onSave} movies={filterMovies} savedMoviesSet={savedFilmsSet} />)}
             </main>
             <Footer/>
         </>

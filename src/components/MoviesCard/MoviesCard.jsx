@@ -10,7 +10,7 @@ function MoviesCard(
         duration,
         thumbnail,
         trailerLink,
-        savedMovies,
+        isFavorite,
         onSave,
         onDelete,
         movie,
@@ -18,7 +18,7 @@ function MoviesCard(
     }
 ) {
     const {pathname} = useLocation();
-    const [favorite, setFavorite] = useState(false);
+    const [favorite, setFavorite] = useState(isFavorite);
 
     function handleFavoriteToggle() {
         onSave(movie)

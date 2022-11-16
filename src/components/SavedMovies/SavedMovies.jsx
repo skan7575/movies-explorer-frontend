@@ -6,29 +6,11 @@ import Footer from "../Footer/Footer";
 import {useEffect, useState} from "react";
 import Preloader from "../Preloader/Preloader";
 import {api} from "../../utils/MainApi";
-function SavedMovies(props) {
+function SavedMovies({savedFilmsSet}) {
     const [isLoading, setIsLoading] = useState(false)
     const [movies, setMovies] = useState([]);
     const [query, setQuery] = useState("")
     const [onlyShort, setOnlyShort] = useState(false)
-    const [savedFilms, setSavedFilms] = useState([])
-
-    useEffect(() => {
-        getFilms()
-    }, [isLoading])
-
-    function getFilms () {
-        api.getSaveFilm()
-            .then((res) => {
-                res.forEach((movies) => {
-                    setSavedFilms(movies)
-                })
-                console.log(savedFilms)
-            })
-            .catch(err => {
-
-            })
-    }
 
     function deleteSaveFilm(id) {
         api.deleteSaveFilm(id.movieId)
@@ -60,7 +42,7 @@ function SavedMovies(props) {
                     moviesData={onMoviesData}
                     onQueryChange={onQueryChange}
                     onSwitchChange={onSwitchChange}/>
-                {isLoading === true ? (<Preloader />) : (<MoviesCardList onDelete={deleteSaveFilm} movies={movies} />)}
+                {isLoading === true ? (<Preloader />) : (<MoviesCardList onDelete={deleteSaveFilm} movies={movies} savedMoviesSet={savedFilmsSet} />)}
             </main>
             <Footer />
         </>

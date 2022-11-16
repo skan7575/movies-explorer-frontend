@@ -4,13 +4,11 @@ import {useEffect, useState} from "react";
 import {useLocation} from "react-router-dom";
 import Preloader from "../Preloader/Preloader";
 
-function MoviesCardList({movies, query, onlyShort, isLoading, onSave, onDelete}
+function MoviesCardList({movies, savedMoviesSet, isLoading, onSave, onDelete}
 ) {
-    const [firstPageSize, setFirstPageSize] = useState()
     const [nextPageSize, setNextPageSize] = useState()
     const [displayedSize, setDisplayedSize] = useState()
     const [availableWidth, setAvailableWidth] = useState(window.innerWidth)
-    const [moreButton, setMoreButton] = useState(2)
     const location = useLocation();
 
     function handleSubmitMore() {
@@ -51,6 +49,7 @@ function MoviesCardList({movies, query, onlyShort, isLoading, onSave, onDelete}
                         return <MoviesCard
                             onDelete={onDelete}
                             onSave={onSave}
+                            isFavorite={savedMoviesSet.has(item.id) }
                             key={item.id}
                             movie={item}
                         />
