@@ -6,11 +6,13 @@ import Footer from "../Footer/Footer";
 import {useEffect, useState} from "react";
 import Preloader from "../Preloader/Preloader";
 import {api} from "../../utils/MainApi";
-function SavedMovies({savedFilmsSet}) {
+function SavedMovies({savedFilms}) {
     const [isLoading, setIsLoading] = useState(false)
     const [movies, setMovies] = useState([]);
     const [query, setQuery] = useState("")
     const [onlyShort, setOnlyShort] = useState(false)
+
+    const savedFilmsSet = new Set(savedFilms.map((item) => item.movieId))
 
     function deleteSaveFilm(id) {
         api.deleteSaveFilm(id.movieId)
