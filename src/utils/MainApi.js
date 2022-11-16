@@ -58,6 +58,38 @@ class MainApi {
             .then(getResponseData)
             .then((data) => data);
     };
+
+    saveFilm(data) {
+        return fetch(`${this.bdlink}/movies`, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                "Content-Type": "application/json",
+                authorization: "Bearer " + localStorage.getItem("token")
+            },
+            body: JSON.stringify(data),
+        }).then(getResponseData);
+    }
+    getSaveFilm() {
+        return fetch(`${this.bdlink}/movies`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                "Content-Type": "application/json",
+                authorization: "Bearer " + localStorage.getItem("token")
+            },
+        }).then(getResponseData);
+    }
+    deleteSaveFilm(id) {
+        return fetch(`${this.bdlink}/movies/_id`, {
+            method: 'DELETE',
+            headers: {
+                Accept: 'application/json',
+                "Content-Type": "application/json",
+                authorization: "Bearer " + localStorage.getItem("token")
+            },
+        }).then(getResponseData);
+    }
 }
 
 
@@ -66,7 +98,7 @@ export const api = new MainApi({
     headers: () => {
         return {
             authorization: "Bearer " + localStorage.getItem("token"),
-            'Content-Type':'application/json',
+            'Content-Type':'application/json'
         }
     }
 })

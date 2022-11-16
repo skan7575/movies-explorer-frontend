@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import './MoviesCard.css'
 import jpg from '../../images/pic__COLOR_pic.jpg'
-import {useLocation} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 
 
 function MoviesCard(
@@ -21,10 +21,12 @@ function MoviesCard(
     const [favorite, setFavorite] = useState(false);
 
     function handleFavoriteToggle() {
-        setFavorite(true)
+        onSave(movie)
+        setFavorite(!favorite)
     }
-    function handleFavoriteDelete() {
 
+    function handleFavoriteDelete() {
+        onDelete(movie)
     }
 
     return (
@@ -33,11 +35,16 @@ function MoviesCard(
                 <h2 className='movies-card__title'>{movie.nameRU}</h2>
                 <p className='movies-card__time'>{movie.duration}</p>
             </div>
-            <img className='movies-card__image' alt={movie.nameRU} src={`https://api.nomoreparties.co/${movie.image.formats.thumbnail.url}`}/>
+            <a href={movie.trailerLink} target="_blank" rel="noopener noreferrer">
+                <img className='movies-card__image' alt={movie.nameRU}
+                                       src={`https://api.nomoreparties.co/${movie.image.formats.thumbnail.url}`}/>
+            </a>
             {pathname === '/saved-movie' ? (
-                <button type="button" className="movies-card__button movies-card__button_delete" onClick={handleFavoriteDelete} />
+                <button type="button" className="movies-card__button movies-card__button_delete"
+                        onClick={handleFavoriteDelete}/>
             ) : (
-                <button type="button" className={`movies-card__button movies-card__button${favorite ? '_active' : '_inactive'}`}
+                <button type="button"
+                        className={`movies-card__button movies-card__button${favorite ? '_active' : '_inactive'}`}
                         onClick={handleFavoriteToggle}>{favorite ? '' : 'сохранить'}</button>
             )}
         </li>

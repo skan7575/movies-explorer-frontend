@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import Header from "../Header/Header";
 import {CurrentUserContext} from "../context/CurrentUserContext";
 import isEmail from "validator/es/lib/isEmail";
-import {Navigate} from "react-router-dom";
+
 function Profile({onUpdate, handleLogout}) {
     const [inputValues, setInputValues] = useState({});
     const [errors, setErrors] = useState({});

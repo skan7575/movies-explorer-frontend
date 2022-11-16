@@ -34,8 +34,8 @@ function Register({onRegister}) {
             }
         }
         if (name === 'password') {
-            if(value.length < 6) {
-                target.setCustomValidity('Пароль не может содержать менее 6 символов');
+            if(value.length < 8) {
+                target.setCustomValidity('Пароль не может содержать менее 8 символов');
             }
             else {
                 target.setCustomValidity('');
@@ -46,9 +46,11 @@ function Register({onRegister}) {
         setIsValid(target.closest('form').checkValidity());
     }
     const handleSubmit = (e) => {
+        localStorage.clear();
         e.preventDefault();
         onRegister(inputValues);
         setInputValues('')
+
     };
 
     return (

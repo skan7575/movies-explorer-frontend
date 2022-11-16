@@ -1,7 +1,7 @@
 import Main from "../Main/Main";
 import Login from "../Login/Login"
 import Header from "../Header/Header";
-import {Route, Routes, Link, Redirect, useNavigate, Navigate, useLocation} from "react-router-dom";
+import {Route, Routes, Link, Redirect, useNavigate, Navigate, useLocation, BrowserRouter} from "react-router-dom";
 
 import '../../index.css'
 import {LoggedInContext} from "../context/LoggedInContext";
@@ -14,8 +14,9 @@ import Profile from "../Profile/Profile";
 import {api} from "../../utils/MainApi";
 import Popup from "../Popup/Popup";
 import {CurrentUserContext} from "../context/CurrentUserContext";
-import {UseAuth} from "../../utils/UseAuth";
+import {PrivateRoute, UseAuth} from "../../utils/UseAuth";
 import {getData} from "../../utils/MoviesApi";
+import Preloader from "../Preloader/Preloader";
 
 function App() {
     const navigate = useNavigate();
@@ -23,7 +24,6 @@ function App() {
     const [loggedIn, setLoggedIn] = useState(false)
     const [popupMassage, setPopupMassage] = useState('')
     const [popupOpen, setPopupOpen] = useState(false)
-    const [movies, setMovies] = useState([]);
 
     function handlePopupClose() {
         setPopupOpen(false)
@@ -94,21 +94,24 @@ function App() {
         }
     }
 
-    useEffect(() => {
-        tokenCheck()
-    }, [loggedIn])
+    function handleSaveFilm(movie) {
+         const refactorMovie = { ...movie,  image: `https://api.nomoreparties.co/${movie.image.formats.thumbnail.url}`, thumbnail: `https://api.nomoreparties.co/${movie.image.formats.thumbnail.url}`, movieId: movie.id};
+            delete refactorMovie.id
+            delete refactorMovie.created_at
+            delete refactorMovie.updated_at
+        api.saveFilm(refactorMovie)
+            .then(res => {
+                console.log(res)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        console.log(movie)
+    }
 
     useEffect(() => {
-        getData()
-            .then((moviesList) => {
-                moviesList.forEach(data => {
-                    setMovies(data)
-                })
-            })
-            .catch((err) => {
-                console.error(err);
-            });
-    }, [loggedIn])
+        tokenCheck()
+    }, [])
 
     return (
         <LoggedInContext.Provider value={loggedIn}>
@@ -133,17 +136,14 @@ function App() {
                             </UseAuth>
                         }/>
                         <Route path='movies' element={
-                            <UseAuth>
-                                <Movies
-                                    movie={movies}
-                                />
-                            </UseAuth>
+                            loggedIn ?
+                            <UseAuth children={<Movies onSave={handleSaveFilm} />}>
+                            </UseAuth> : <Preloader />
                         }/>
-
                         <Route path='signin' element={
-                                <Login
-                                    isLogin={handleLogin}
-                                />
+                            <Login
+                                isLogin={handleLogin}
+                            />
                         }/>
                         <Route path='signup' element={<Register
                             onRegister={handleRegister}

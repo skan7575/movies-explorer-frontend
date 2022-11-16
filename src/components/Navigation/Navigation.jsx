@@ -26,8 +26,8 @@ function Navigation() {
                         <button className="navigation__popup-button" type="button" onClick={handlePopupClose}></button>
                         <div className='navigation__container'>
                             <Link onClick={handlePopupClose} to='/' className='navigation__link navigation__link_mobile'>Главная</Link>
-                            <NavLink to='/movies' className='navigation__link'>Фильмы</NavLink>
-                            <NavLink to='/saved-movie' className='navigation__link'>Сохранённые фильмы</NavLink>
+                            <NavLink onClick={handlePopupClose} to='/movies' className='navigation__link'>Фильмы</NavLink>
+                            <NavLink onClick={handlePopupClose} to='/saved-movie' className='navigation__link'>Сохранённые фильмы</NavLink>
                         </div>
                         <Link className='navigation__link' to='/profile'><button className='navigation__account'>Аккаунт</button></Link>
                     </nav>
