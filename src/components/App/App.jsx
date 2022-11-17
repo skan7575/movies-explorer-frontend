@@ -83,7 +83,7 @@ function App() {
     }
 
     function handleLogout() {
-        localStorage.removeItem('token');
+        localStorage.clear();
         setLoggedIn(false)
         navigate('/')
     }
@@ -103,6 +103,22 @@ function App() {
                 })
                 .catch((err) => console.error(err));
         }
+    }
+
+
+    function handleDeleteFilm(id) {
+        api.deleteSaveFilm(id)
+            .then((res) => {
+                console.log(res.data._id)
+                const movie = res
+                getSavedFilms()
+                setSavedFilms(savedFilms.filter(film => film.id !== 1))
+                // console.log('res' + movie + 'c.key' + movie._id)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
     }
 
     function handleSaveFilm(movie) {
@@ -143,13 +159,13 @@ function App() {
                             </UseAuth>
                         }/>
                         <Route path='saved-movie' element={
-                            <UseAuth>
-                                <SavedMovies savedFilms={savedFilms} />
-                            </UseAuth>
+                            loggedIn ?
+                                <UseAuth children={<SavedMovies onDelete={handleDeleteFilm} savedFilms={savedFilms}/>}>
+                                </UseAuth> : <Preloader />
                         }/>
                         <Route path='movies' element={
                             loggedIn ?
-                            <UseAuth children={<Movies onSave={handleSaveFilm} savedFilms={savedFilms} />}>
+                            <UseAuth children={<Movies onDelete={handleDeleteFilm} onSave={handleSaveFilm} savedFilms={savedFilms} />}>
                             </UseAuth> : <Preloader />
                         }/>
                         <Route path='signin' element={

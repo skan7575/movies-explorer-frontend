@@ -6,15 +6,17 @@ import {Link, useLocation} from "react-router-dom";
 
 function MoviesCard(
     {
+        id,
         name,
         duration,
         thumbnail,
         trailerLink,
         isFavorite,
+        movie,
         onSave,
         onDelete,
-        movie,
         allSavedMovies,
+        key
     }
 ) {
     const {pathname} = useLocation();
@@ -26,18 +28,18 @@ function MoviesCard(
     }
 
     function handleFavoriteDelete() {
-        onDelete(movie)
+        onDelete(id)
     }
 
     return (
         <li className='movies-card-list__item'>
             <div className='movies-card__about'>
-                <h2 className='movies-card__title'>{movie.nameRU}</h2>
-                <p className='movies-card__time'>{movie.duration}</p>
+                <h2 className='movies-card__title'>{name}</h2>
+                <p className='movies-card__time'>{duration}</p>
             </div>
-            <a href={movie.trailerLink} target="_blank" rel="noopener noreferrer">
-                <img className='movies-card__image' alt={movie.nameRU}
-                                       src={`https://api.nomoreparties.co/${movie.image.formats.thumbnail.url}`}/>
+            <a href={trailerLink} target="_blank" rel="noopener noreferrer">
+                <img className='movies-card__image' alt={name}
+                                       src={thumbnail}/>
             </a>
             {pathname === '/saved-movie' ? (
                 <button type="button" className="movies-card__button movies-card__button_delete"
@@ -45,7 +47,7 @@ function MoviesCard(
             ) : (
                 <button type="button"
                         className={`movies-card__button movies-card__button${favorite ? '_active' : '_inactive'}`}
-                        onClick={handleFavoriteToggle}>{favorite ? '' : 'сохранить'}</button>
+                        onClick={favorite ? handleFavoriteDelete : handleFavoriteToggle}>{favorite ? '' : 'сохранить'}</button>
             )}
         </li>
     )

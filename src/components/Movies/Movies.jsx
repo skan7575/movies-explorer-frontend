@@ -6,19 +6,18 @@ import Footer from "../Footer/Footer";
 import {useState, useEffect} from "react";
 import {getData} from "../../utils/MoviesApi";
 import Preloader from "../Preloader/Preloader";
-import preloader from "../Preloader/Preloader";
 
-function Movies({onSave, savedFilms}) {
+function Movies({onSave, savedFilms, onDelete}) {
     const [movies, setMovies] = useState([]);
     const [query, setQuery] = useState("")
     const [onlyShort, setOnlyShort] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
+    const [searchText, setSearchText] = useState('')
 
     useEffect(() => {
+        getBaseFilms()
         const saveMoviesList = JSON.parse(localStorage.getItem('moviesSearchList'))
-        if(localStorage.getItem('moviesSearchList') !== null) {
-            setMovies(saveMoviesList)
-        } else return
+
     }, [setMovies])
 
     const filterMovies = movies
@@ -31,31 +30,44 @@ function Movies({onSave, savedFilms}) {
 
     const savedFilmsSet = new Set(savedFilms.map((item) => item.movieId))
 
-    function onQueryChange(query) {
+    function onSearchSubmit(query, onlyShort) {
+        console.log("onSearchSubmit"+query+" "+onlyShort)
         setQuery(query)
         localStorage.setItem('searchFilms', query)
+        setOnlyShort(onlyShort)
+        localStorage.setItem('OnlyShort', onlyShort)
+
+        getBaseFilms()
     }
 
-    function onSwitchChange(value) {
-        setOnlyShort(value)
-        console.log(onlyShort)
-        localStorage.setItem('OnlyShort', value)
+    function getBaseFilms() {
+        setIsLoading(true)
+        getData()
+            .then((moviesList) => {
+                const moviesLocalStorage = localStorage.getItem('searchFilms')
+                if (moviesLocalStorage === null) {
+                    return
+                } else setMovies(moviesList)
+                setSearchText('ничего не найдено')
+
+            })
+            .catch((err) => {
+                setSearchText('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз')
+                console.error(err);
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
     }
-    function onMoviesData(value) {
-        console.log("onMoviesData:"+value.length)
-        setMovies(value)
-        localStorage.setItem('moviesSearchList', JSON.stringify(value))
-    }
+
     return (
         <>
             <Header/>
             <main className='movies'>
                 <SearchForm
                     isLoading={setIsLoading}
-                    moviesData={onMoviesData}
-                    onQueryChange={onQueryChange}
-                    onSwitchChange={onSwitchChange}/>
-                {isLoading === true ? (<Preloader />) : (<MoviesCardList onSave={onSave} movies={filterMovies} savedMoviesSet={savedFilmsSet} />)}
+                    onSubmit={onSearchSubmit}/>
+                {isLoading === true ? (<Preloader />) : (<MoviesCardList searchText={searchText} onSave={onSave} onDelete={onDelete} movies={filterMovies} savedMoviesSet={savedFilmsSet} />)}
             </main>
             <Footer/>
         </>

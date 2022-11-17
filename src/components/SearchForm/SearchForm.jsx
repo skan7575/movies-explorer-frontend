@@ -1,59 +1,22 @@
 import './SearchForm.css'
 import {useEffect, useState} from "react";
 import {getData} from "../../utils/MoviesApi";
+import {useLocation} from "react-router-dom";
 
-function SearchForm({
-                        isLoading,
-                        moviesData,
-                        onQueryChange,
-                        onSwitchChange,
-                    }) {
+function SearchForm({onSubmit}) {
     const [searchInputValue, setSearchInputValue] = useState("")
     const [checkboxValue, setCheckboxValue] = useState(false)
-    const [movies, setMovies] = useState([])
-
-    // useEffect(() => {
-    //     getData()
-    //         .then((moviesList) => {
-    //             setMovies(moviesList)
-    //         })
-    //         .catch((err) => {
-    //             console.error(err);
-    //         })
-    // }, [])
-
+    const location = useLocation()
     useEffect(() => {
-        setSearchInputValue(localStorage.getItem('searchFilms'))
-        setCheckboxValue(localStorage.getItem('OnlyShort') === "true")
-        getBaseFilms()
-    }, [])
+        if(location.pathname === '/saved-movie') {
+            setSearchInputValue('')
+            setCheckboxValue('')
+        } else {
+            setSearchInputValue(localStorage.getItem('searchFilms'))
+            setCheckboxValue(localStorage.getItem('OnlyShort') === "true")
+        }
 
-    // function getFilms () {
-    //         getData()
-    //             .then((moviesList) => {
-    //                 setMovies(moviesList)
-    //             })
-    //             .catch((err) => {
-    //                 console.error(err);
-    //             });
-    // }
-    // useEffect(() => {
-    //     setCheckboxValue()
-    // })
-    function getBaseFilms() {
-        getData()
-            .then((moviesList) => {
-                console.log("getData:"+moviesList.length)
-                setMovies(moviesList)
-            })
-            .catch((err) => {
-                console.error(err);
-            })
-            .finally(() => {
-                isLoading(false)
-            })
-        isLoading(true)
-    }
+    }, [])
 
     function handleChangeFormValue(e) {
         setSearchInputValue(e.target.value)
@@ -65,17 +28,13 @@ function SearchForm({
 
     function handleSubmitFrom(e) {
         e.preventDefault()
-        getBaseFilms()
-        console.log("handleSubmitFrom:"+movies.length)
-        moviesData(movies)
-        onSwitchChange(checkboxValue)
-        onQueryChange(searchInputValue)
+        onSubmit(searchInputValue, checkboxValue)
     }
 
     return (
         <form onSubmit={handleSubmitFrom} className='search-form'>
             <div className='search-form__container'>
-                <input value={searchInputValue} onChange={handleChangeFormValue} required placeholder='Фильм'
+                <input value={searchInputValue} onChange={handleChangeFormValue} required={location.pathname === '/saved-movie' ? false : true}  placeholder='Фильм'
                        className='search-form__input' type='search'/>
                 <button type='submit' className='search-form__button'></button>
             </div>

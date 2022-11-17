@@ -6,45 +6,56 @@ import Footer from "../Footer/Footer";
 import {useEffect, useState} from "react";
 import Preloader from "../Preloader/Preloader";
 import {api} from "../../utils/MainApi";
-function SavedMovies({savedFilms}) {
+function SavedMovies({savedFilms, onDelete}) {
     const [isLoading, setIsLoading] = useState(false)
     const [movies, setMovies] = useState([]);
     const [query, setQuery] = useState("")
     const [onlyShort, setOnlyShort] = useState(false)
+    const [searchText, setSearchText] = useState('')
 
     const savedFilmsSet = new Set(savedFilms.map((item) => item.movieId))
 
-    function deleteSaveFilm(id) {
-        api.deleteSaveFilm(id.movieId)
-            .then(res => {
-                console.log(res)
-            })
-            .catch(err => {
-                console.log(err)
-            })
-        console.log(id.movieId)
+    useEffect(() => {
+        getBaseFilms()
+    }, [])
+
+    const filterMovies = movies
+        .filter(({ nameRU, duration }) => {
+            const queryLowerCase = query
+            const onlyShortChoice =  onlyShort
+            return nameRU.toLowerCase().includes(queryLowerCase)
+                && (!onlyShortChoice || duration <= 40)
+        })
+
+    function onSearchSubmit(query, onlyShort) {
+        setQuery(query.toLowerCase())
+        setOnlyShort(onlyShort)
     }
 
-    function onQueryChange(query) {
-        setQuery(query)
+    function getBaseFilms() {
+        setIsLoading(true)
+        api.getSaveFilm()
+            .then((moviesList) => {
+                setMovies(moviesList)
+                setSearchText('ничего не найдено')
+            })
+            .catch((err) => {
+                console.error(err);
+                setSearchText('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз')
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
     }
 
-    function onSwitchChange(value) {
-        setOnlyShort(value)
-    }
-    function onMoviesData(value) {
-        setMovies(value)
-    }
     return(
         <>
             <Header />
             <main className='movies'>
                 <SearchForm
                     isLoading={setIsLoading}
-                    moviesData={onMoviesData}
-                    onQueryChange={onQueryChange}
-                    onSwitchChange={onSwitchChange}/>
-                {isLoading === true ? (<Preloader />) : (<MoviesCardList onDelete={deleteSaveFilm} movies={movies} savedMoviesSet={savedFilmsSet} />)}
+                    onSubmit={onSearchSubmit}/>
+                {isLoading === true ? (<Preloader />) : (<MoviesCardList searchText={searchText} onDelete={onDelete} movies={filterMovies} savedMoviesSet={savedFilmsSet} />)}
             </main>
             <Footer />
         </>

@@ -81,7 +81,7 @@ class MainApi {
         }).then(getResponseData);
     }
     deleteSaveFilm(id) {
-        return fetch(`${this.bdlink}/movies/_id`, {
+        return fetch(`${this.bdlink}/movies/${id}`, {
             method: 'DELETE',
             headers: {
                 Accept: 'application/json',
