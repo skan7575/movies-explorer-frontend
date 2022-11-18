@@ -24,6 +24,7 @@ function SearchForm({onSubmit}) {
 
     function handleChangeCheckbox(e) {
         setCheckboxValue(e.target.checked)
+        onSubmit(searchInputValue, !checkboxValue)
     }
 
     function handleSubmitFrom(e) {

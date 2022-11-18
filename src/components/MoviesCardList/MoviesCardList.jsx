@@ -44,7 +44,7 @@ function MoviesCardList({movies, savedMoviesSet, isLoading, onSave, onDelete, se
 
     return (
         <>
-            {isLoading ? (<Preloader />) :
+            {isLoading ? (<Preloader/>) :
                 (<ul className='movies-card-list'>
                     {}
                     {movies.slice(0, displayedSize).map((item) => {
@@ -55,7 +55,7 @@ function MoviesCardList({movies, savedMoviesSet, isLoading, onSave, onDelete, se
                             name={item.nameRU}
                             duration={item.duration}
                             trailerLink={item.trailerLink}
-                            thumbnail={(item.thumbnail != null)? item.thumbnail : `https://api.nomoreparties.co/${item.image.formats.thumbnail.url}`}
+                            thumbnail={(item.thumbnail != null) ? item.thumbnail : `https://api.nomoreparties.co/${item.image.formats.thumbnail.url}`}
                             onDelete={onDelete}
                             onSave={onSave}
                             isFavorite={savedMoviesSet.has(filmId)}

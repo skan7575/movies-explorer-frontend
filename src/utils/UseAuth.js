@@ -1,6 +1,6 @@
-import {useContext, useEffect, useState} from "react";
+import {useContext} from "react";
 import {LoggedInContext} from "../components/context/LoggedInContext";
-import {Navigate, useLocation} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 
 
 export const UseAuth = ({children}) => {

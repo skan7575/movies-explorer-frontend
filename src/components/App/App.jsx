@@ -1,10 +1,10 @@
 import Main from "../Main/Main";
 import Login from "../Login/Login"
-import {Route, Routes, useNavigate, Navigate, useLocation} from "react-router-dom";
+import {Route, Routes, useNavigate, Navigate,} from "react-router-dom";
 
 import '../../index.css'
 import {LoggedInContext} from "../context/LoggedInContext";
-import {Children, useEffect, useState, useContext} from "react";
+import {useEffect, useState} from "react";
 import Register from "../Register/Register";
 import Movies from "../Movies/Movies";
 import NotFoundPage from "../NotFoundPage/NotFoundPage";
@@ -13,9 +13,7 @@ import Profile from "../Profile/Profile";
 import {api} from "../../utils/MainApi";
 import Popup from "../Popup/Popup";
 import {CurrentUserContext} from "../context/CurrentUserContext";
-import {PrivateRoute, UseAuth} from "../../utils/UseAuth";
-import {getData} from "../../utils/MoviesApi";
-import Preloader from "../Preloader/Preloader";
+import {UseAuth} from "../../utils/UseAuth";
 
 function App() {
     const navigate = useNavigate();
@@ -24,7 +22,6 @@ function App() {
     const [popupMassage, setPopupMassage] = useState('')
     const [popupOpen, setPopupOpen] = useState(false)
     const [savedFilms, setSavedFilms] = useState([])
-    const location = useLocation()
 
     useEffect(() => {
         tokenCheck()
@@ -33,13 +30,13 @@ function App() {
         getSavedFilms()
     }, [])
 
-    function getSavedFilms () {
+    function getSavedFilms() {
         api.getSaveFilm()
             .then((res) => {
                 setSavedFilms(res)
             })
             .catch(err => {
-
+                console.log(err)
             })
     }
 
@@ -51,15 +48,13 @@ function App() {
         api.register(formData)
             .then((res) => {
                 if (res) {
-                    setPopupMassage('Вы успешно зарегистрировались! А я авторизировался за Вас:)');
-                    setPopupOpen(true);
                     handleLogin(formData)
                 }
             })
             .catch((err) => {
                 console.log({err})
-                setPopupMassage(`${err}`);
-                setPopupOpen(true);
+                setPopupMassage('Данный email уже зарегистрирован');
+                setPopupOpen(true)
             });
     }
 
@@ -74,6 +69,8 @@ function App() {
             })
             .catch((err) => {
                 console.log({err})
+                setPopupMassage('Проверьте логин или пароль');
+                setPopupOpen(true)
             });
     }
 
@@ -81,11 +78,14 @@ function App() {
         api.updateUser(formData)
             .then((res) => {
                 if (res) {
+                    setPopupMassage('Ваш профиль обновлен');
+                    setPopupOpen(true)
                     setUserData({email: res.email, name: res.name})
                 }
             })
             .catch((err) => {
                 console.log({err})
+                setPopupOpen(true)
             });
     }
 
@@ -118,11 +118,7 @@ function App() {
         const savedMovieId = savedMovie._id
         api.deleteSaveFilm(savedMovieId)
             .then((res) => {
-                // if(location.pathname === '/saved-movie') {
-                    setSavedFilms(prevState => prevState.filter((e) => e._id !== savedMovieId))
-                    // getSavedFilms()
-                    console.log('тык')
-                // }
+                setSavedFilms(prevState => prevState.filter((e) => e._id !== savedMovieId))
             })
             .catch(err => {
                 console.log(err)
@@ -131,14 +127,17 @@ function App() {
     }
 
     function handleSaveFilm(movie) {
-         const refactorMovie = { ...movie,  image: `https://api.nomoreparties.co/${movie.image.formats.thumbnail.url}`, thumbnail: `https://api.nomoreparties.co/${movie.image.formats.thumbnail.url}`, movieId: movie.id};
-            delete refactorMovie.id
-            delete refactorMovie.created_at
-            delete refactorMovie.updated_at
+        const refactorMovie = {
+            ...movie,
+            image: `https://api.nomoreparties.co/${movie.image.formats.thumbnail.url}`,
+            thumbnail: `https://api.nomoreparties.co/${movie.image.formats.thumbnail.url}`,
+            movieId: movie.id
+        };
+        delete refactorMovie.id
+        delete refactorMovie.created_at
+        delete refactorMovie.updated_at
         api.saveFilm(refactorMovie)
             .then(res => {
-                console.log(res.data)
-
                 setSavedFilms((savedFilms) => {
                     savedFilms.push(res.data)
                     return savedFilms
@@ -149,7 +148,6 @@ function App() {
             })
         console.log(movie)
     }
-
 
 
     return (
@@ -170,24 +168,25 @@ function App() {
                             </UseAuth>
                         }/>
                         <Route path='saved-movie' element={
-                                <UseAuth children={<SavedMovies onDelete={handleDeleteFilm} savedFilms={savedFilms}/>}>
-                                </UseAuth>
+                            <UseAuth children={<SavedMovies onDelete={handleDeleteFilm} savedFilms={savedFilms}/>}>
+                            </UseAuth>
                         }/>
                         <Route path='movies' element={
-                                <UseAuth children={<Movies onDelete={handleDeleteFilm} onSave={handleSaveFilm} savedFilms={savedFilms} />}>
-                                </UseAuth>
+                            <UseAuth children={<Movies onDelete={handleDeleteFilm} onSave={handleSaveFilm}
+                                                       savedFilms={savedFilms}/>}>
+                            </UseAuth>
                         }/>
                         <Route path='signin' element={
                             !loggedIn ?
-                            <Login
-                                isLogin={handleLogin}
-                            /> : <Navigate to="/" />
+                                <Login
+                                    isLogin={handleLogin}
+                                /> : <Navigate to="/"/>
                         }/>
                         <Route path='signup' element={
                             !loggedIn ?
-                            <Register
-                            onRegister={handleRegister}
-                        /> : <Navigate to='/' />}
+                                <Register
+                                    onRegister={handleRegister}
+                                /> : <Navigate to='/'/>}
                         />
                         <Route path='*' element={<NotFoundPage/>}/>
                     </Routes>

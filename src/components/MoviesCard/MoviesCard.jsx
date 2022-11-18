@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import './MoviesCard.css'
-import jpg from '../../images/pic__COLOR_pic.jpg'
-import {Link, useLocation} from "react-router-dom";
+import { useLocation} from "react-router-dom";
 
 
 function MoviesCard(
@@ -14,9 +13,7 @@ function MoviesCard(
         isFavorite,
         movie,
         onSave,
-        onDelete,
-        allSavedMovies,
-        key
+        onDelete
     }
 ) {
     const {pathname} = useLocation();
