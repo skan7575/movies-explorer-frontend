@@ -1,0 +1,26 @@
+.nevtab__links {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+.nevtab__link {
+    text-decoration: none;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    text-align: center;
+    background-color: #303030;
+    padding: 10px 23px;
+    border-radius: 10px;
+    cursor: pointer;
+    max-width: 96px;
+    max-height: 36px;
+}
+
+@media screen and (min-width: 320px) and (max-width: 768px)  {
+    .nevtab__link {
+        max-width: 82px;
+        max-height: 26px;
+    }
+}

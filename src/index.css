@@ -1,0 +1,32 @@
+@import url(vendor/normalize.css);
+@import url(vendor/fonts/font__inter.css);
+body {
+  background-color: #202020;
+}
+.page {
+  margin: 0 auto;
+  padding: 0;
+  width: 100%;
+  min-width: 320px;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+}
+button, input, optgroup, select, textarea, span {
+  font-family: 'Inter', sans-serif;
+}
+.hover-link:hover {
+  transition: opacity 0.3s ease-in;
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.hover-button:hover {
+  transition: opacity 0.3s ease-in;
+  opacity: 0.8;
+  cursor: pointer;
+}
