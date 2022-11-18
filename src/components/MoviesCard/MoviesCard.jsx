@@ -29,6 +29,7 @@ function MoviesCard(
 
     function handleFavoriteDelete() {
         onDelete(id)
+        setFavorite(!favorite)
     }
 
     return (

@@ -48,7 +48,7 @@ function MoviesCardList({movies, savedMoviesSet, isLoading, onSave, onDelete, se
                 (<ul className='movies-card-list'>
                     {}
                     {movies.slice(0, displayedSize).map((item) => {
-                        const filmId = (item.movieId == null) ? item.id : item._id
+                        const filmId = (item.movieId == null) ? item.id : item.movieId
                         const key = (item.movieId == null) ? item.id : item._id
                         return <MoviesCard
                             id={filmId}
@@ -61,7 +61,6 @@ function MoviesCardList({movies, savedMoviesSet, isLoading, onSave, onDelete, se
                             isFavorite={savedMoviesSet.has(filmId)}
                             key={key}
                             movie={item}
-
                         />
                     })}
                     {localStorage.getItem('searchFilms') === null ? '' : (movies.length > 0 ? '' : <p>{searchText}</p>)}

@@ -16,9 +16,7 @@ function Movies({onSave, savedFilms, onDelete}) {
 
     useEffect(() => {
         getBaseFilms()
-        const saveMoviesList = JSON.parse(localStorage.getItem('moviesSearchList'))
-
-    }, [setMovies])
+    }, [])
 
     const filterMovies = movies
         .filter(({ nameRU, duration }) => {

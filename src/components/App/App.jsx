@@ -1,7 +1,6 @@
 import Main from "../Main/Main";
 import Login from "../Login/Login"
-import Header from "../Header/Header";
-import {Route, Routes, Link, Redirect, useNavigate, Navigate, useLocation, BrowserRouter} from "react-router-dom";
+import {Route, Routes, useNavigate, Navigate, useLocation} from "react-router-dom";
 
 import '../../index.css'
 import {LoggedInContext} from "../context/LoggedInContext";
@@ -21,10 +20,18 @@ import Preloader from "../Preloader/Preloader";
 function App() {
     const navigate = useNavigate();
     const [userData, setUserData] = useState({})
-    const [loggedIn, setLoggedIn] = useState(false)
+    const [loggedIn, setLoggedIn] = useState(localStorage.getItem('token'))
     const [popupMassage, setPopupMassage] = useState('')
     const [popupOpen, setPopupOpen] = useState(false)
     const [savedFilms, setSavedFilms] = useState([])
+    const location = useLocation()
+
+    useEffect(() => {
+        tokenCheck()
+    }, [loggedIn])
+    useEffect(() => {
+        getSavedFilms()
+    }, [])
 
     function getSavedFilms () {
         api.getSaveFilm()
@@ -107,13 +114,15 @@ function App() {
 
 
     function handleDeleteFilm(id) {
-        api.deleteSaveFilm(id)
+        const savedMovie = savedFilms.find((item) => item.movieId === id)
+        const savedMovieId = savedMovie._id
+        api.deleteSaveFilm(savedMovieId)
             .then((res) => {
-                console.log(res.data._id)
-                const movie = res
-                getSavedFilms()
-                setSavedFilms(savedFilms.filter(film => film.id !== 1))
-                // console.log('res' + movie + 'c.key' + movie._id)
+                // if(location.pathname === '/saved-movie') {
+                    setSavedFilms(prevState => prevState.filter((e) => e._id !== savedMovieId))
+                    // getSavedFilms()
+                    console.log('тык')
+                // }
             })
             .catch(err => {
                 console.log(err)
@@ -128,7 +137,12 @@ function App() {
             delete refactorMovie.updated_at
         api.saveFilm(refactorMovie)
             .then(res => {
-                console.log(res)
+                console.log(res.data)
+
+                setSavedFilms((savedFilms) => {
+                    savedFilms.push(res.data)
+                    return savedFilms
+                })
             })
             .catch(err => {
                 console.log(err)
@@ -136,10 +150,7 @@ function App() {
         console.log(movie)
     }
 
-    useEffect(() => {
-        tokenCheck()
-        getSavedFilms()
-    }, [])
+
 
     return (
         <LoggedInContext.Provider value={loggedIn}>
@@ -159,23 +170,25 @@ function App() {
                             </UseAuth>
                         }/>
                         <Route path='saved-movie' element={
-                            loggedIn ?
                                 <UseAuth children={<SavedMovies onDelete={handleDeleteFilm} savedFilms={savedFilms}/>}>
-                                </UseAuth> : <Preloader />
+                                </UseAuth>
                         }/>
                         <Route path='movies' element={
-                            loggedIn ?
-                            <UseAuth children={<Movies onDelete={handleDeleteFilm} onSave={handleSaveFilm} savedFilms={savedFilms} />}>
-                            </UseAuth> : <Preloader />
+                                <UseAuth children={<Movies onDelete={handleDeleteFilm} onSave={handleSaveFilm} savedFilms={savedFilms} />}>
+                                </UseAuth>
                         }/>
                         <Route path='signin' element={
+                            !loggedIn ?
                             <Login
                                 isLogin={handleLogin}
-                            />
+                            /> : <Navigate to="/" />
                         }/>
-                        <Route path='signup' element={<Register
+                        <Route path='signup' element={
+                            !loggedIn ?
+                            <Register
                             onRegister={handleRegister}
-                        />}/>
+                        /> : <Navigate to='/' />}
+                        />
                         <Route path='*' element={<NotFoundPage/>}/>
                     </Routes>
                 </div>

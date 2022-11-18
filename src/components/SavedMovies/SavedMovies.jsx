@@ -16,8 +16,10 @@ function SavedMovies({savedFilms, onDelete}) {
     const savedFilmsSet = new Set(savedFilms.map((item) => item.movieId))
 
     useEffect(() => {
+
         getBaseFilms()
     }, [])
+
 
     const filterMovies = movies
         .filter(({ nameRU, duration }) => {
@@ -48,6 +50,11 @@ function SavedMovies({savedFilms, onDelete}) {
             })
     }
 
+    function handlerOnDelete(id) {
+        onDelete(id)
+        setMovies((prevState) => prevState.filter((e) => e.movieId !== id))
+    }
+
     return(
         <>
             <Header />
@@ -55,7 +62,7 @@ function SavedMovies({savedFilms, onDelete}) {
                 <SearchForm
                     isLoading={setIsLoading}
                     onSubmit={onSearchSubmit}/>
-                {isLoading === true ? (<Preloader />) : (<MoviesCardList searchText={searchText} onDelete={onDelete} movies={filterMovies} savedMoviesSet={savedFilmsSet} />)}
+                {isLoading === true ? (<Preloader />) : (<MoviesCardList searchText={searchText} onDelete={handlerOnDelete} movies={filterMovies} savedMoviesSet={savedFilmsSet} />)}
             </main>
             <Footer />
         </>
