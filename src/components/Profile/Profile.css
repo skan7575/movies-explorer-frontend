@@ -73,6 +73,7 @@ input:focus::placeholder {
 }
 .profile__from-button_disabled {
     cursor: not-allowed;
+    opacity: 0.4;
 }
 .profile__exit-button {
     font-size: 13px;

@@ -10,29 +10,29 @@ function Profile({onUpdate, handleLogout}) {
     const [isValid, setIsValid] = useState(false);
     const currentUser = React.useContext(CurrentUserContext);
 
-
-
     const handleInputChange = (e) => {
         const target = e.target;
         const name = target.name;
         const value = target.value;
 
         if (name === 'email') {
-            if (!isEmail(value)) {
+            if(!isEmail(value)) {
                 target.setCustomValidity('Проверьте правильность ввода E-mail');
-            }
-            if(value === currentUser.email) {
+            } else  if (value === currentUser.email) {
+                console.log(value.length)
                 target.setCustomValidity('Поле соответствует текущим данным');
             }
             else {
                 target.setCustomValidity('');
             }
         }
+
         if (name === 'name') {
             if(value.length < 2) {
+                console.log(value.length)
                 target.setCustomValidity('Поле имя не может быть меньше 2 символов');
-            }
-            if(value === currentUser.name) {
+            } else  if (value === currentUser.name) {
+                console.log(value.length)
                 target.setCustomValidity('Поле соответствует текущим данным');
             }
             else {

@@ -6,6 +6,7 @@ import {useLocation} from "react-router-dom";
 function SearchForm({onSubmit}) {
     const [searchInputValue, setSearchInputValue] = useState("")
     const [checkboxValue, setCheckboxValue] = useState(false)
+    const [errors, setErrors] = useState('');
     const location = useLocation()
     useEffect(() => {
         if(location.pathname === '/saved-movie') {
@@ -20,6 +21,12 @@ function SearchForm({onSubmit}) {
 
     function handleChangeFormValue(e) {
         setSearchInputValue(e.target.value)
+        if (e.target.value.length >= 1) {
+            setErrors('')
+        }
+         else  {
+            setErrors('')
+        }
     }
 
     function handleChangeCheckbox(e) {
@@ -29,13 +36,17 @@ function SearchForm({onSubmit}) {
 
     function handleSubmitFrom(e) {
         e.preventDefault()
-        onSubmit(searchInputValue, checkboxValue)
+        if(searchInputValue.length < 1 && location.pathname === '/movies') {
+            setErrors('поле для поиска не может быть пустым')
+        } else {
+            onSubmit(searchInputValue, checkboxValue)
+        }
     }
 
     return (
         <form onSubmit={handleSubmitFrom} className='search-form'>
             <div className='search-form__container'>
-                <input value={searchInputValue} onChange={handleChangeFormValue} required={location.pathname === '/saved-movie' ? false : true}  placeholder='Фильм'
+                <input value={searchInputValue} onChange={handleChangeFormValue}  placeholder={errors}
                        className='search-form__input' type='search'/>
                 <button type='submit' className='search-form__button'></button>
             </div>
