@@ -25,7 +25,7 @@ function App() {
 
     useEffect(() => {
         tokenCheck()
-    }, [loggedIn])
+    }, [])
     useEffect(() => {
         getSavedFilms()
     }, [])
@@ -36,7 +36,10 @@ function App() {
                 setSavedFilms(res)
             })
             .catch(err => {
-                console.log(err)
+                if (err === 'Ошибка: 401') {
+                    handleLogout()
+                    console.log(err)
+                } else console.log(err)
             })
     }
 
@@ -83,10 +86,11 @@ function App() {
                     setUserData({email: res.email, name: res.name})
                 }
             })
-            .catch((err) => {
-                console.log({err})
-                setPopupOpen(true)
-            });
+            .catch(err => {
+                    handleLogout()
+                    console.log(err)
+                }
+            )
     }
 
     function handleLogout() {
@@ -105,6 +109,7 @@ function App() {
                         setLoggedIn(true)
                         setUserData({email: res.email, name: res.name});
                     } else {
+                        handleLogout()
                         navigate('/');
                     }
                 })
@@ -121,8 +126,10 @@ function App() {
                 setSavedFilms(prevState => prevState.filter((e) => e._id !== savedMovieId))
             })
             .catch(err => {
-                console.log(err)
-            })
+                    handleLogout()
+                    console.log(err)
+                }
+            )
 
     }
 
@@ -144,11 +151,12 @@ function App() {
                 })
             })
             .catch(err => {
-                console.log(err)
-            })
+                    handleLogout()
+                    console.log(err)
+                }
+            )
         console.log(movie)
     }
-
 
     return (
         <LoggedInContext.Provider value={loggedIn}>

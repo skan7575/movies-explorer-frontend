@@ -4,7 +4,7 @@ import {getData} from "../../utils/MoviesApi";
 import {useLocation} from "react-router-dom";
 
 function SearchForm({onSubmit}) {
-    const [searchInputValue, setSearchInputValue] = useState("")
+    const [searchInputValue, setSearchInputValue] = useState(' ')
     const [checkboxValue, setCheckboxValue] = useState(false)
     const [errors, setErrors] = useState('');
     const location = useLocation()
@@ -12,7 +12,12 @@ function SearchForm({onSubmit}) {
         if(location.pathname === '/saved-movie') {
             setSearchInputValue('')
             setCheckboxValue('')
-        } else {
+        } else if(location.pathname === '/movies' && localStorage.getItem('searchFilms') === null) {
+            setSearchInputValue('')
+            setCheckboxValue('')
+        }
+
+        else {
             setSearchInputValue(localStorage.getItem('searchFilms'))
             setCheckboxValue(localStorage.getItem('OnlyShort') === "true")
         }

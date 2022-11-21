@@ -18,6 +18,8 @@ function MoviesCard(
 ) {
     const {pathname} = useLocation();
     const [favorite, setFavorite] = useState(isFavorite);
+    let hours = Math.floor(duration / 60);
+    let minutes = Math.floor(duration - hours * 60);
 
     function handleFavoriteToggle() {
         onSave(movie)
@@ -33,7 +35,7 @@ function MoviesCard(
         <li className='movies-card-list__item'>
             <div className='movies-card__about'>
                 <h2 className='movies-card__title'>{name}</h2>
-                <p className='movies-card__time'>{duration}</p>
+                <p className='movies-card__time'>{hours >= 1 ? hours+'ч' : ''} {minutes >= 1 ? minutes+ ' минут' : ''}</p>
             </div>
             <a href={trailerLink} target="_blank" rel="noopener noreferrer">
                 <img className='movies-card__image' alt={name}

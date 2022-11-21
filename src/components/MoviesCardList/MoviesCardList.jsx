@@ -7,8 +7,8 @@ import Preloader from "../Preloader/Preloader";
 function MoviesCardList({movies, savedMoviesSet, isLoading, onSave, onDelete, searchText}
 ) {
 
-    const [nextPageSize, setNextPageSize] = useState()
-    const [displayedSize, setDisplayedSize] = useState()
+    const [nextPageSize, setNextPageSize] = useState(0)
+    const [displayedSize, setDisplayedSize] = useState(0)
     const [availableWidth, setAvailableWidth] = useState(window.innerWidth)
     const location = useLocation();
 
@@ -20,7 +20,6 @@ function MoviesCardList({movies, savedMoviesSet, isLoading, onSave, onDelete, se
         const handleWindowResize = () => {
             setAvailableWidth(window.innerWidth);
         };
-
         if (location.pathname === '/movies') {
             if (availableWidth <= 480) {
                 setDisplayedSize(5)
@@ -28,12 +27,20 @@ function MoviesCardList({movies, savedMoviesSet, isLoading, onSave, onDelete, se
             } else if (availableWidth <= 768) {
                 setDisplayedSize(8)
                 setNextPageSize(2)
-            } else {
+
+            } else if (availableWidth >= 1280) {
                 setDisplayedSize(12)
                 setNextPageSize(3)
             }
+            else if (availableWidth >= 768) {
+                setDisplayedSize(8)
+                setNextPageSize(2)
+            }
         }
-
+        else if (location.pathname === '/saved-movie') {
+            setDisplayedSize(20)
+            setNextPageSize(3)
+        }
         window.addEventListener('resize', handleWindowResize);
         return () => {
             window.removeEventListener('resize', handleWindowResize);

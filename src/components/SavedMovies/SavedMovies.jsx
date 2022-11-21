@@ -16,7 +16,6 @@ function SavedMovies({savedFilms, onDelete}) {
     const savedFilmsSet = new Set(savedFilms.map((item) => item.movieId))
 
     useEffect(() => {
-
         getBaseFilms()
     }, [])
 
