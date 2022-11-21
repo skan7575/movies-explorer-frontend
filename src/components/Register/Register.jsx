@@ -19,21 +19,21 @@ function Register({onRegister}) {
 
 
         if (name === 'email') {
-            if (!isEmail(value)) {
+            if (!isEmail(value) || value.length <= 0) {
                 target.setCustomValidity('Проверьте правильность ввода E-mail');
             } else {
                 target.setCustomValidity('');
             }
         }
         if (name === 'name') {
-            if(value.length < 2) {
+            if(value.length < 2 || value.length <= 0) {
                 target.setCustomValidity('Поле имя не может быть меньше 2 символов');
             }
             else {
                 target.setCustomValidity('');
             }
         }
-        if (name === 'password') {
+        if (name === 'password' || value.length <= 0) {
             if(value.length < 8) {
                 target.setCustomValidity('Пароль не может содержать менее 8 символов');
             }

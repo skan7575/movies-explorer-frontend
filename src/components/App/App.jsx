@@ -25,7 +25,7 @@ function App() {
 
     useEffect(() => {
         tokenCheck()
-    }, [])
+    }, [loggedIn])
     useEffect(() => {
         getSavedFilms()
     }, [])
@@ -36,10 +36,7 @@ function App() {
                 setSavedFilms(res)
             })
             .catch(err => {
-                if (err === 'Ошибка: 401') {
-                    handleLogout()
-                    console.log(err)
-                } else console.log(err)
+                 console.log(err)
             })
     }
 
@@ -87,7 +84,7 @@ function App() {
                 }
             })
             .catch(err => {
-                    handleLogout()
+
                     console.log(err)
                 }
             )

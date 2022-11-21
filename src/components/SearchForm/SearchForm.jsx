@@ -42,7 +42,7 @@ function SearchForm({onSubmit}) {
     function handleSubmitFrom(e) {
         e.preventDefault()
         if(searchInputValue.length < 1 && location.pathname === '/movies') {
-            setErrors('поле для поиска не может быть пустым')
+            setErrors('Нужно ввести ключевое слово')
         } else {
             onSubmit(searchInputValue, checkboxValue)
         }

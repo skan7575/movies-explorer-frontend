@@ -15,7 +15,7 @@ function Login({isLogin}) {
         const value = target.value;
 
         if (name === 'password') {
-            if(value.length < 6) {
+            if(value.length < 6 || value.length <= 0) {
                 target.setCustomValidity('Пароль не может содержать менее 6 символов');
             }
             else {
@@ -23,7 +23,7 @@ function Login({isLogin}) {
             }
         }
         if (name === 'email') {
-            if(!isEmail(value)) {
+            if(!isEmail(value) || value.length <= 0) {
                 target.setCustomValidity('Введите корректный E-mail');
             }
             else {
