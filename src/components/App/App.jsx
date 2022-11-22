@@ -30,7 +30,6 @@ function App() {
         getSavedFilms()
     }, [])
 
-
     function getSavedFilms() {
         if (localStorage.getItem('savedMovies') !== null) {
             setSavedFilms(JSON.parse(localStorage.getItem('savedMovies')))
