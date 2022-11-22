@@ -40,22 +40,35 @@ function Movies({onSave, savedFilms, onDelete}) {
 
     function getBaseFilms() {
         setIsLoading(true)
-        getData()
-            .then((moviesList) => {
-                const moviesLocalStorage = localStorage.getItem('searchFilms')
-                if (moviesLocalStorage === null) {
-                    return
-                } else setMovies(moviesList)
-                setSearchText('ничего не найдено')
+        if(localStorage.getItem('BaseFilms') !== null) {
+            const baseFilms = JSON.parse(localStorage.getItem('BaseFilms'))
+            const moviesLocalStorage = localStorage.getItem('searchFilms')
+            setIsLoading(false)
+            if (moviesLocalStorage === null) {
+                return
+            } else setMovies(baseFilms)
+            setSearchText('ничего не найдено')
+        }
+        else {
+            getData()
+                .then((moviesList) => {
+                    localStorage.setItem('BaseFilms', JSON.stringify(moviesList))
+                    const moviesLocalStorage = localStorage.getItem('searchFilms')
+                    if (moviesLocalStorage === null) {
+                        return
+                    } else setMovies(moviesList)
+                    setSearchText('ничего не найдено')
 
-            })
-            .catch((err) => {
-                setSearchText('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз')
-                console.error(err);
-            })
-            .finally(() => {
-                setIsLoading(false)
-            })
+                })
+                .catch((err) => {
+                    setSearchText('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз')
+                    console.error(err);
+                })
+                .finally(() => {
+                    setIsLoading(false)
+                })
+        }
+
     }
 
     return (

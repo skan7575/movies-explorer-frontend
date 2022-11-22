@@ -6,6 +6,7 @@ import Footer from "../Footer/Footer";
 import {useEffect, useState} from "react";
 import Preloader from "../Preloader/Preloader";
 import {api} from "../../utils/MainApi";
+
 function SavedMovies({savedFilms, onDelete}) {
     const [isLoading, setIsLoading] = useState(false)
     const [movies, setMovies] = useState([]);
@@ -21,9 +22,9 @@ function SavedMovies({savedFilms, onDelete}) {
 
 
     const filterMovies = movies
-        .filter(({ nameRU, duration }) => {
+        .filter(({nameRU, duration}) => {
             const queryLowerCase = query
-            const onlyShortChoice =  onlyShort
+            const onlyShortChoice = onlyShort
             return nameRU.toLowerCase().includes(queryLowerCase)
                 && (!onlyShortChoice || duration <= 40)
         })
@@ -35,36 +36,45 @@ function SavedMovies({savedFilms, onDelete}) {
 
     function getBaseFilms() {
         setIsLoading(true)
-        api.getSaveFilm()
-            .then((moviesList) => {
-                setMovies(moviesList)
-                setSearchText('ничего не найдено')
-            })
-            .catch((err) => {
-                console.error(err);
-                setSearchText('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз')
-            })
-            .finally(() => {
-                setIsLoading(false)
-            })
+        if (localStorage.getItem('savedMovies') !== null) {
+            setMovies(JSON.parse(localStorage.getItem('savedMovies')))
+            setSearchText('ничего не найдено')
+            setIsLoading(false)
+        } else {
+            api.getSaveFilm()
+                .then((moviesList) => {
+                    localStorage.setItem('savedMovies', JSON.stringify(moviesList))
+                    setMovies(moviesList)
+                    setSearchText('ничего не найдено')
+                })
+                .catch((err) => {
+                    console.error(err);
+                    setSearchText('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз')
+                })
+                .finally(() => {
+                    setIsLoading(false)
+                })
+        }
     }
-
     function handlerOnDelete(id) {
         onDelete(id)
         setMovies((prevState) => prevState.filter((e) => e.movieId !== id))
     }
 
-    return(
+    return (
         <>
-            <Header />
+            <Header/>
             <main className='movies'>
                 <SearchForm
                     isLoading={setIsLoading}
                     onSubmit={onSearchSubmit}/>
-                {isLoading === true ? (<Preloader />) : (<MoviesCardList searchText={searchText} onDelete={handlerOnDelete} movies={filterMovies} savedMoviesSet={savedFilmsSet} />)}
+                {isLoading === true ? (<Preloader/>) : (
+                    <MoviesCardList searchText={searchText} onDelete={handlerOnDelete} movies={filterMovies}
+                                    savedMoviesSet={savedFilmsSet}/>)}
             </main>
-            <Footer />
+            <Footer/>
         </>
     )
 }
+
 export default SavedMovies

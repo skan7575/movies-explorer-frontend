@@ -25,19 +25,25 @@ function App() {
 
     useEffect(() => {
         tokenCheck()
-    }, [loggedIn])
+    }, [])
     useEffect(() => {
         getSavedFilms()
     }, [])
 
+
     function getSavedFilms() {
-        api.getSaveFilm()
-            .then((res) => {
-                setSavedFilms(res)
-            })
-            .catch(err => {
-                 console.log(err)
-            })
+        if (localStorage.getItem('savedMovies') !== null) {
+            setSavedFilms(JSON.parse(localStorage.getItem('savedMovies')))
+        } else {
+            api.getSaveFilm()
+                .then((res) => {
+                    localStorage.setItem('savedMovies', JSON.stringify(res))
+                    setSavedFilms(res)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        }
     }
 
     function handlePopupClose() {
@@ -117,10 +123,15 @@ function App() {
 
     function handleDeleteFilm(id) {
         const savedMovie = savedFilms.find((item) => item.movieId === id)
+        if (savedMovie == null) return
         const savedMovieId = savedMovie._id
         api.deleteSaveFilm(savedMovieId)
             .then((res) => {
-                setSavedFilms(prevState => prevState.filter((e) => e._id !== savedMovieId))
+                setSavedFilms((prevState) => {
+                    const result = prevState.filter((e) => e._id !== savedMovieId)
+                    localStorage.setItem('savedMovies', JSON.stringify(result))
+                    return result
+                })
             })
             .catch(err => {
                     handleLogout()
@@ -144,12 +155,15 @@ function App() {
             .then(res => {
                 setSavedFilms((savedFilms) => {
                     savedFilms.push(res.data)
+                    localStorage.setItem("savedMovies", JSON.stringify(savedFilms))
                     return savedFilms
                 })
             })
             .catch(err => {
-                    handleLogout()
-                    console.log(err)
+                    if (err === 'Ошибка: 401') {
+                        handleLogout()
+                    } else
+                        console.log(err.name)
                 }
             )
         console.log(movie)

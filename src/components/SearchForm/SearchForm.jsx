@@ -1,6 +1,5 @@
 import './SearchForm.css'
 import {useEffect, useState} from "react";
-import {getData} from "../../utils/MoviesApi";
 import {useLocation} from "react-router-dom";
 
 function SearchForm({onSubmit}) {

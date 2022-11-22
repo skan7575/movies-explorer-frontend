@@ -6,10 +6,13 @@ import isEmail from "validator/es/lib/isEmail";
 
 function Profile({onUpdate, handleLogout}) {
     const currentUser = React.useContext(CurrentUserContext);
-    const [inputValues, setInputValues] = useState({});
+    const [inputValues, setInputValues] = useState({ });
     const [errors, setErrors] = useState({});
     const [isValid, setIsValid] = useState(false);
 
+    useEffect(() => {
+        setInputValues({ name: currentUser.name, email: currentUser.email })
+    }, [currentUser])
 
     const handleInputChange = (e) => {
         const target = e.target;
@@ -46,9 +49,7 @@ function Profile({onUpdate, handleLogout}) {
         e.preventDefault();
         onUpdate(inputValues)
     }
-    const handleOnFocus = (e) => {
-        e.target.value = ''
-    }
+
 
     return (
         <>
@@ -61,8 +62,7 @@ function Profile({onUpdate, handleLogout}) {
                             Имя
                         </label>
                         <input required
-                               value={inputValues.name || currentUser.name}
-                               onFocus={handleOnFocus}
+                               value={inputValues.name}
                                onChange={handleInputChange}
                                type="text"
                                name='name'
@@ -76,8 +76,7 @@ function Profile({onUpdate, handleLogout}) {
                         <input
                             required
                             name='email'
-                            onFocus={handleOnFocus}
-                            value={inputValues.email || currentUser.email}
+                            value={inputValues.email}
                             onChange={handleInputChange}
                             type="text"
                             className='profile__from-input'/>
