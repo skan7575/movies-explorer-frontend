@@ -40,7 +40,12 @@ function App() {
                     setSavedFilms(res)
                 })
                 .catch(err => {
-                    console.log(err)
+                    if(err === 'Ошибка: 401') {
+                        handleLogout()
+                    }
+                    else {
+                        console.log(err)
+                    }
                 })
         }
     }
@@ -89,8 +94,12 @@ function App() {
                 }
             })
             .catch(err => {
-
+                if(err === 'Ошибка: 401') {
+                    handleLogout()
+                }
+                else {
                     console.log(err)
+                }
                 }
             )
     }
@@ -133,8 +142,12 @@ function App() {
                 })
             })
             .catch(err => {
+                if(err === 'Ошибка: 401') {
                     handleLogout()
+                }
+                else {
                     console.log(err)
+                }
                 }
             )
 
