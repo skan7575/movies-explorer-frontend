@@ -25,7 +25,7 @@ function App() {
 
     useEffect(() => {
         tokenCheck()
-    }, [])
+    }, [loggedIn])
     useEffect(() => {
         getSavedFilms()
     }, [])
