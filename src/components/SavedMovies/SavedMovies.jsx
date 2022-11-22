@@ -12,7 +12,7 @@ function SavedMovies({savedFilms, onDelete}) {
     const [movies, setMovies] = useState([]);
     const [query, setQuery] = useState("")
     const [onlyShort, setOnlyShort] = useState(false)
-    const [searchText, setSearchText] = useState('')
+    const [searchText, setSearchText] = useState('ничего не найдено')
 
     const savedFilmsSet = new Set(savedFilms.map((item) => item.movieId))
 

@@ -12,7 +12,7 @@ function Movies({onSave, savedFilms, onDelete}) {
     const [query, setQuery] = useState("")
     const [onlyShort, setOnlyShort] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
-    const [searchText, setSearchText] = useState('')
+    const [searchText, setSearchText] = useState('ничего не найдено')
 
     useEffect(() => {
         getBaseFilms()
