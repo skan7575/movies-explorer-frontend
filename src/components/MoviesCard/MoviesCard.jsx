@@ -1,33 +1,53 @@
 import React, {useState} from "react";
 import './MoviesCard.css'
-import jpg from '../../images/pic__COLOR_pic.jpg'
-import {useLocation} from "react-router-dom";
+import { useLocation} from "react-router-dom";
 
 
-function MoviesCard(props) {
+function MoviesCard(
+    {
+        id,
+        name,
+        duration,
+        thumbnail,
+        trailerLink,
+        isFavorite,
+        movie,
+        onSave,
+        onDelete
+    }
+) {
     const {pathname} = useLocation();
-    const [favorite, setFavorite] = useState(false);
+    const [favorite, setFavorite] = useState(isFavorite);
+    let hours = Math.floor(duration / 60);
+    let minutes = Math.floor(duration - hours * 60);
 
     function handleFavoriteToggle() {
-        setFavorite(true)
+        onSave(movie)
+        setFavorite(!favorite)
     }
-    function handleFavoriteDelete() {
 
+    function handleFavoriteDelete() {
+        onDelete(id)
+        setFavorite(!favorite)
     }
 
     return (
-
         <li className='movies-card-list__item'>
             <div className='movies-card__about'>
-                <h2 className='movies-card__title'>В погоне за Бенкси</h2>
-                <p className='movies-card__time'>27 минут</p>
+                <h2 className='movies-card__title'>{name}</h2>
+                <p className='movies-card__time'>{hours >= 1 ? hours+'ч' : ''} {minutes >= 1 ? minutes+ ' минут' : ''}</p>
             </div>
-            <img className='movies-card__image' src={jpg} alt="описание картинки будет использовано при создании функционала"/>
+            <a href={trailerLink} target="_blank" rel="noopener noreferrer">
+                <img className='movies-card__image' alt={name}
+                                       src={thumbnail}/>
+            </a>
             {pathname === '/saved-movie' ? (
-                <button type="button" className="movies-card__button movies-card__button_delete" onClick={handleFavoriteDelete} />
+                <button type="button" className="movies-card__button movies-card__button_delete"
+                        onClick={handleFavoriteDelete}/>
             ) : (
-                <button type="button" className={`movies-card__button movies-card__button${favorite ? '_active' : '_inactive'}`}
-                        onClick={handleFavoriteToggle}>{favorite ? '' : 'сохранить'}</button>
+                <button type="button"
+                        className={`movies-card__button movies-card__button${favorite ? '_active' : '_inactive'}`}
+                        onClick={favorite ? handleFavoriteDelete : handleFavoriteToggle}>{favorite ? '' : 'сохранить'}</button>
             )}
         </li>
     )

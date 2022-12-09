@@ -1,93 +1,92 @@
 import React from "react";
-import { withRouter } from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import Logo from "../Logo/Logo";
 import {Link} from "react-router-dom";
 import "./Register.css"
 import {useEffect, useState} from "react";
-function Register(props) {
-    const[name, setName] = useState('')
-    const[nameFocus, setNameFocus] = useState('')
-    const[email, setEmail] = useState('')
-    const[password, setPassword] = useState('')
-    const[emailFocus, setEmailFocus] = useState(false)
-    const[passwordFocus, setPasswordFocus] = useState(false)
-    const[emailError, setEmailError] = useState('Email не может быть пустым')
-    const[passwordError, setPasswordError] = useState('Пароль не может быть меньше 8 символов')
-    const[formValid, setFormValid] = useState(false)
+import isEmail from 'validator/es/lib/isEmail';
+import Popup from "../Popup/Popup";
 
-    useEffect(()=> {
-        if( emailError || passwordError) {
-            setFormValid(false)
-        } else {
-            setFormValid(true)
-        }
-    }, [emailError, passwordError])
+function Register({onRegister}) {
+    const [inputValues, setInputValues] = useState({});
+    const [errors, setErrors] = useState({});
+    const [isValid, setIsValid] = useState(false);
 
-    const emailHandler = (e) => {
-        setEmail(e.target.value)
-        const re =
-            /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-        if(!re.test(String(e.target.value).toLowerCase())) {
-            setEmailError('Email не корректен')
-        } else {
-            setEmailError('')
-        }
-    }
-    const nameHandler = (e) => {
-        setName(e.target.value)
-    }
-    const passwordHandler = (e) => {
-        setPassword(e.target.value)
-        if(e.target.value.length < 8) {
-            setPasswordError('пароль не может быть меньше 8 символов')
-        } else {
-            setPasswordError('')
-        }
-    }
+    const handleInputChange = (e) => {
+        const target = e.target;
+        const name = target.name;
+        const value = target.value;
 
-    const blurHandler = (e) =>{
-        switch (e.target.name) {
-            case 'email':
-                setEmailFocus(true)
-                break
-            case 'password':
-                setPasswordFocus(true)
-                break
-            case 'name':
-                setNameFocus(true)
-                break
+
+        if (name === 'email') {
+            if (!isEmail(value) || value.length <= 0) {
+                target.setCustomValidity('Проверьте правильность ввода E-mail');
+            } else {
+                target.setCustomValidity('');
+            }
         }
+        if (name === 'name') {
+            if(value.length < 2 || value.length <= 0) {
+                target.setCustomValidity('Поле имя не может быть меньше 2 символов');
+            }
+            else {
+                target.setCustomValidity('');
+            }
+        }
+        if (name === 'password' || value.length <= 0) {
+            if(value.length < 8) {
+                target.setCustomValidity('Пароль не может содержать менее 8 символов');
+            }
+            else {
+                target.setCustomValidity('');
+            }
+        }
+        setInputValues({...inputValues, [name]: value});
+        setErrors({...errors, [name]: target.validationMessage});
+        setIsValid(target.closest('form').checkValidity());
     }
     const handleSubmit = (e) => {
+        localStorage.clear();
         e.preventDefault();
-        console.log('ьтык')
-    }
+        onRegister(inputValues);
+        setInputValues('')
 
-    return(
-    <main className='register'>
-        <Logo />
-        <h1 className='register__title'>Добро пожаловать!</h1>
-        <form onSubmit={handleSubmit} className='register__form'>
-            <div className="register__form-container">
-                <label className='register__form-label'>Имя</label>
-                <input onChange={nameHandler} value={name} name='name' className='register__form-input' type="text" required/>
-            </div>
-            <div className="register__form-container">
-                <label className='register__form-label'>E-mail</label>
-                <input onChange={emailHandler} value={email} onBlur={e=> blurHandler(e)} name='email' className='register__form-input' type="text" required/>
-                {(emailFocus && emailError) && <span>{emailError}</span>}
-            </div>
-            <div className="register__form-container">
-                <label className='register__form-label'>Пароль</label>
-                <input onChange={passwordHandler} value={password} onBlur={e=> blurHandler(e)} name='password' className='register__form-input' type="text" required/>
-                {(passwordFocus && passwordError) && <span>{passwordError}</span>}
-            </div>
-            <button disabled={!formValid} className={formValid ?'register__form-button': 'button__disabled'}>Зарегистрироваться</button>
-            <p className="register__form-signup">Уже зарегистрированы?
-                <Link to="/signin" className="register__form-link">Войти</Link>
-            </p>
-        </form>
-    </main>
+    };
+
+    return (
+        <>
+            <main className='register'>
+                <Logo/>
+                <h1 className='register__title'>Добро пожаловать!</h1>
+                <form onSubmit={handleSubmit} className='register__form'>
+                    <div className="register__form-container">
+                        <label className='register__form-label'>Имя</label>
+                        <input onChange={handleInputChange} value={inputValues.name || ''} name='name'
+                               className='register__form-input' type="text" required/>
+                        <span className='register__error'>{errors.name}</span>
+                    </div>
+                    <div className="register__form-container">
+                        <label className='register__form-label'>E-mail</label>
+                        <input onChange={handleInputChange} value={inputValues.email || ''} name='email'
+                               className='register__form-input' type="email" required/>
+                        <span className='register__error'>{errors.email}</span>
+                    </div>
+                    <div className="register__form-container">
+                        <label className='register__form-label'>Пароль</label>
+                        <input onChange={handleInputChange} value={inputValues.password || ''} name='password'
+                               className='register__form-input' type="password" required/>
+                        <span className='register__error'>{errors.password}</span>
+                    </div>
+                    <button disabled={!isValid}
+                            className={isValid ? 'register__form-button' : 'button__disabled'}>Зарегистрироваться
+                    </button>
+                    <p className="register__form-signup">Уже зарегистрированы?
+                        <Link to="/signin" className="register__form-link">Войти</Link>
+                    </p>
+                </form>
+            </main>
+        </>
     )
 }
+
 export default Register

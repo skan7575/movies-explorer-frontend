@@ -14,7 +14,7 @@ function AboutMe(){
                     </p>
                     <ul className='about-me__list'>
                         <li><a target='_blank' rel="noopener noreferrer" className='about-me__list-item' href='https://vk.com/inafoxi'>Vk</a></li>
-                        <li><a target='_blank' className='about-me__list-item' href='https://github.com/skan7575'>GitHub</a></li>
+                        <li><a target='_blank' className='about-me__list-item' href='https://github.com/skan7575' rel="noreferrer">GitHub</a></li>
                     </ul>
                 </div>
                 <img className='about-me__photo' src={me} alt="Сергей"/>

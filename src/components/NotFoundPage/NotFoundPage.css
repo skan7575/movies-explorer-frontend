@@ -23,9 +23,12 @@
     margin: 5px 0;
 }
 .not-found__button {
+    background-color: transparent;
+    border: none;
     color: #4285F4;
     text-decoration: none;
     margin-top: 184px;
+    cursor: pointer;
 }
 @media screen and (max-width: 767px)  {
     .not-found__button {

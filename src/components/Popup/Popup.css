@@ -1,0 +1,40 @@
+.popup {
+    width: 40%;
+    height: 20%;
+    background:#2F2F2F;
+    position:fixed;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    border-radius: 20px;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+.popup__text {
+    color: #FFFFFF;
+    font-size: 16px;
+    font-family: inter;
+}
+.popup_open {
+    display: flex;
+}
+.popup__button-exit {
+    background-color: transparent;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    background-image: url(../../images/Group.svg);
+    background-size: contain;
+    outline: none;
+    border: none;
+}
+@media screen and (max-width: 767px) {
+    .popup {
+        width: 70%;
+        height: 20%;
+    }
+}
